@@ -71,7 +71,6 @@ function orderlist(response) {
     })
 }
 
-
 let handle = {}; // key:value
 handle['/'] = main;
 handle['/order'] = order;
