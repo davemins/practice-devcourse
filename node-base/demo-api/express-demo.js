@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 
+app.listen(1234)
+
 // API : GET + "https://localhost:1234/"
 // Hello World
 app.get('/', function (req, res) {
@@ -27,6 +29,3 @@ let book = {
 app.get('/hello', function (req, res) {
     res.json(book)
 })
-
-
-app.listen(1234)

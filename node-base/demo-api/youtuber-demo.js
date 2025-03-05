@@ -34,11 +34,19 @@ db.set(id++, youtuber3)
 // 전체 유튜버 "조회" GET /youtubers
 app.get('/youtubers', function (req, res) {
     var youtubers = {}
-    db.forEach(function(youtuber) {
-        youtubers[youtuber.channelTitle] = youtuber
-    })
 
-    res.json(youtubers)
+    if (db.size !== 0) {
+
+        db.forEach(function(youtuber) {
+            youtubers[youtuber.channelTitle] = youtuber
+        })
+
+        res.json(youtubers)
+    } else {
+        res.status(404).json({
+            message : "조회할 유튜버가 없습니다."
+        })
+    }
 })
 
 // 개별 유튜버 "조회" GET /youtubers/:id
@@ -49,7 +57,7 @@ app.get('/youtubers/:id', function (req, res) {
     const youtuber = db.get(id)
 
     if (youtuber == undefined) {
-        res.json({
+        res.status(404).json({
             message : "유튜버 정보를 찾을 수 없습니다."
         })
     } else {
@@ -61,16 +69,21 @@ app.use(express.json()) // http 외 모듈인 '미들웨어':json 설정
 
 // 유튜버 "등록" POST /youtubers
 app.post('/youtubers', (req, res) => {
+    const channelTitle = req.body.channelTitle
+
+    if (channelTitle) {
+        // 등록
+        db.set(id++, req.body)
     
-    console.log(req.body)
-
-    // 등록
-    db.set(id++, req.body)
-
-    // 등록 메시지 출력
-    res.json({
-        message : `${db.get(id-1).channelTitle}님, 유튜버 생활을 응원합니다!`
-    })
+        // 등록 메시지 출력
+        res.status(201).json({
+            message : `${db.get(id-1).channelTitle}님, 유튜버 생활을 응원합니다!`
+        })
+    } else {
+        res.status(400).json({
+            message : "이건 아니잖아.."
+        })
+    }
 })
 
 // 개별 유튜버 "삭제" DELETE /youtubers/:id
@@ -81,7 +94,7 @@ app.delete('/youtubers/:id', function (req, res) {
     var youtuber = db.get(id)
 
     if (youtuber == undefined) {
-        res.json({
+        res.status(404).json({
             message : `요청하신 ${id}번에 해당하는 유튜버는 없습니다..`
         })
     } else {
@@ -101,14 +114,14 @@ app.delete('/youtubers', function(req, res) {
     // db에 값이 1개 이상이면, 전체 삭제
     if(db.size >= 1) {
         db.clear()
-        msg = "전체 유튜버가 삭제되었습니다."
+        res.json({
+            message : "전체 유튜버가 삭제되었습니다."
+        })
     } else { // 값이 없으면,
-        msg = "삭제할 유튜버가 없습니다."
+        res.status(404).json({
+            message : "삭제할 유튜버가 없습니다."
+        })
     }
-    
-    res.json({
-        message : msg
-    })
 })
 
 // 개별 유튜버 "수정" PUT /youtubers/:id
@@ -119,7 +132,7 @@ app.put('/youtubers/:id', function(req, res) {
     var youtuber = db.get(id)
     var oldTitble = youtuber.channelTitle
     if (youtuber == undefined) {
-        res.json({
+        res.status(404).json({
             message : `요청하신 ${id}번은 없는 유튜버입니다.`
         })
     } else {
