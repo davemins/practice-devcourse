@@ -11,23 +11,33 @@ var id = 1
 app.post('/login', (req, res) => {
     // userId가 db에 저장된 회원인지 확인하기
     const {userId, password} = req.body
+    var loginUser = {}
+
     db.forEach(function(user, id) {
         // a : 데이터
         // b : 인덱스
         // c : 전체
         if (user.userId === userId) {
-            console.log("같은 것 찾았다.")
-
-
-            // password도 맞는지 확인하기
-            if (user.password === password) {
-                console.log("패스워드도 같다!")
-            } else {
-                console.log("패스워드는 틀렸다..")
-            }
+            loginUser = user
         }
-
     })
+
+    // id 값을 못 찾았으면..
+    if(Object.keys(loginUser).length) {
+        console.log("같은 것 찾았다.")
+
+        // password도 맞는지 확인하기
+        if (loginUser.password === password) {
+            console.log("패스워드도 같다!")
+            res.json({ message : "로그인 성공"})
+        } else {
+            console.log("패스워드는 틀렸다..")
+            res.json({ message : "잘못된 패스워드 입력.."})
+        }
+    } else {
+        console.log("없는 아이디입니다.")
+        res.json({ message : "없는 아이디"})
+    }
 })
 
 // 회원 가입
