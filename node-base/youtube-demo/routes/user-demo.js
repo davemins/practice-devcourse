@@ -1,14 +1,16 @@
 // express 모듈 셋팅
 const express = require('express')
-const app = express()
-app.listen(7777)
-app.use(express.json()) // http 외 모듈 'json' 사용
+const router = express.Router() // express의 라우터로 사용할 수 있게 되었다.
+
+// const app = express()
+// app.listen(7777)
+router.use(express.json()) // http 외 모듈 'json' 사용
 
 let db = new Map()
 var id = 1
 
 // 로그인
-app.post('/login', (req, res) => {
+router.post('/login', (req, res) => {
     // userId가 db에 저장된 회원인지 확인하기
     const {userId, password} = req.body
     var loginUser = {}
@@ -41,7 +43,7 @@ app.post('/login', (req, res) => {
 })
 
 // 회원 가입
-app.post('/join', (req, res) => {
+router.post('/join', (req, res) => {
     console.log(req.body)
 
     // 입력 값 검증: req.body가 없거나, name이 없으면 에러 반환
@@ -60,7 +62,7 @@ app.post('/join', (req, res) => {
 })
 
 // 회원 개별 조회
-app.get('/users/:id', (req, res) => {
+router.get('/users/:id', (req, res) => {
     let {id} = req.params
     id = parseInt(id)
 
@@ -79,7 +81,7 @@ app.get('/users/:id', (req, res) => {
 })
 
 // 회원 개별 탈퇴
-app.delete('/users/:id', (req, res) => {
+router.delete('/users/:id', (req, res) => {
 
     let {id} = req.params
     id = parseInt(id)
@@ -98,3 +100,5 @@ app.delete('/users/:id', (req, res) => {
         })
     }
 })
+
+module.exports = router

@@ -1,13 +1,13 @@
 // express 모듈 셋팅
 const express = require('express')
-const app = express()
-app.listen(7777)
-app.use(express.json()) // http 외 모듈 'json' 사용
+const router = express.Router()
+
+router.use(express.json()) // http 외 모듈 'json' 사용
 
 let db = new Map()
 var id = 1
 
-app
+router
     .route('/channels')
     .post((req, res) => {
         if (req.body.channelTitle) {
@@ -38,7 +38,7 @@ app
         }
     }) // 채널 전체 조회
 
-app
+router
     .route('/channels/:id')
     .get((req, res) => {
         let {id} = req.params
