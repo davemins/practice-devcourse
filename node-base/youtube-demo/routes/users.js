@@ -17,7 +17,7 @@ router.post('/login', (req, res) => {
 
     conn.query(
         `SELECT * FROM users WHERE email = ?`, email,
-        function (err, results, fields) {
+        function (err, results) {
             var loginUser = results[0];
             if (loginUser && loginUser.password === password) {
                 res.status(200).json({ message: "로그인 성공" })
@@ -65,7 +65,7 @@ router.post('/join', (req, res) => {
 
         conn.query(
             `INSERT INTO users (email, name, password, contact) VALUES (?, ?, ?, ?)`, [email, name, pwd, contact],
-            function (err, results, fields) {
+            function (err, results) {
                 res.status(201).json(results)
             })
     }
@@ -77,7 +77,7 @@ router.get('/users', (req, res) => {
 
     conn.query(
         `SELECT * FROM users WHERE email = ?`, email,
-        function (err, results, fields) {
+        function (err, results) {
             if (results.length)
                 res.status(200).json(results)
             else {
@@ -95,7 +95,7 @@ router.delete('/users', (req, res) => {
 
     conn.query(
         `DELETE FROM users WHERE email = ?`, email,
-        function (err, results, fields) {
+        function (err, results) {
             res.status(200).json(results)
         }
     )
