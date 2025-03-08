@@ -1,6 +1,12 @@
 {
   "dependencies": {
+    "axios": "^1.8.1",
+    "babel": "^5.8.38",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "figlet": "^1.8.0"
+    "figlet": "^1.8.0",
+    "mysql2": "^3.13.0",
+    "node-fetch": "^2.7.0",
+    "nodemon": "^3.1.9"
   }
 }
