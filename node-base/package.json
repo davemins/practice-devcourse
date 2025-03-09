@@ -4,6 +4,7 @@
     "babel": "^5.8.38",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "express-validator": "^7.2.1",
     "figlet": "^1.8.0",
     "mysql2": "^3.13.0",
     "node-fetch": "^2.7.0",

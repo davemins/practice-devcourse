@@ -14,7 +14,6 @@ router.post('/login', (req, res) => {
     // userId가 db에 저장된 회원인지 확인하기
     const { email, password } = req.body
 
-
     conn.query(
         `SELECT * FROM users WHERE email = ?`, email,
         function (err, results) {
